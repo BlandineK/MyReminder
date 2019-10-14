@@ -33,15 +33,15 @@
         android:hint="Enter Zip Code"
         android:layout_centerHorizontal="true" />
 
-<!--    <Button-->
-<!--        android:id="@+id/GetRemindersButton"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_alignParentBottom="true"-->
-<!--        android:layout_marginBottom="0dp"-->
-<!--        android:background="@color/colorAccent"-->
-<!--        android:text="Get Reminders"-->
-<!--        android:textColor="@color/colorTextIcons" />-->
+    <Button
+        android:id="@+id/GetRemindersButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="0dp"
+        android:background="@color/colorAccent"
+        android:text="Get Reminders"
+        android:textColor="@color/colorTextIcons" />
 
     <ListView
         android:layout_width="match_parent"
