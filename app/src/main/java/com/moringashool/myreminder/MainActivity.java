@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         mLocationEditText = (EditText) findViewById(R.id.locationEditText);
-//        mGetRemindersButton = (Button) findViewById(R.id.GetRemindersButton);
+        mGetRemindersButton = (Button) findViewById(R.id.GetRemindersButton);
         mAppNameTextView = (TextView) findViewById(R.id.appNameTextView);
 
 
