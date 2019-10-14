@@ -17,6 +17,7 @@ import butterknife.ButterKnife;
 public class RemindersActivity extends AppCompatActivity {
 //    private TextView mLocationTextView;
 //    private ListView mListView;
+
     @BindView(R.id.locationTextView) TextView mLocationTextView;
     @BindView(R.id.listView) ListView mListView;
 
@@ -40,17 +41,17 @@ public class RemindersActivity extends AppCompatActivity {
         mLocationTextView = (TextView) findViewById(R.id.locationTextView);
 
 
-
-        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, reminders);
+//
+        MyRemindersArrayAdapter adapter = new MyRemindersArrayAdapter(this, android.R.layout.simple_list_item_1, reminders, remindersUse);
         mListView.setAdapter(adapter);
 
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 String reminder = ((TextView)view).getText().toString();
-                Log.v("RemindersActivity", "In the onItemClickListener!");
-                Toast.makeText(RemindersActivity.this, reminder, Toast.LENGTH_LONG).show();
-                Log.v(TAG, "In the onItemClickListener!");
+
+                Toast.makeText(RemindersActivity.this, reminder , Toast.LENGTH_LONG).show();
+//                Log.v(TAG, "In the onItemClickListener!");
             }
         });
 
