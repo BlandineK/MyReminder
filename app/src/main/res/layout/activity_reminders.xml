@@ -6,7 +6,7 @@
     tools:context="com.moringaschool.MyReminder.RemindersActivity">
 
     <TextView
-        android:layout_width="wrap_content"
+<!--        android:layout_width="wrap_content"-->
         android:layout_height="wrap_content"
         android:text="Reminders Available"
         android:id="@+id/locationTextView"
