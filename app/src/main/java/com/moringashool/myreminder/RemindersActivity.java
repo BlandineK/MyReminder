@@ -38,7 +38,7 @@ public class RemindersActivity extends AppCompatActivity {
 
 
 
-//        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, reminders);
+        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, reminders);
         mListView.setAdapter(adapter);
 
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
