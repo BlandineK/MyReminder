@@ -20,10 +20,13 @@ public class RemindersActivity extends AppCompatActivity {
     @BindView(R.id.locationTextView) TextView mLocationTextView;
     @BindView(R.id.listView) ListView mListView;
 
-    private String[] reminders = new String[] {"Waking up", "Taking breakfast",
+    private String[] reminders = new String[] {"Reminder1", "Reminder2",
+            "Reminder3", "Reminder4", "Reminder5", "Reminder6",
+            "Reminder7", "Reminder8", "Reminder9"};
+
+    private String[] remindersUse = new String[] {"Waking up", "Taking breakfast",
             "Time for lunch", "Doing a 30 min Prep", "Taking a short break", "Going to after class studies",
             "Going for a short jogging", "Taking bus to home", "Calling my Dad"};
-
     public static final String TAG = RemindersActivity.class.getSimpleName();
 
     @Override
