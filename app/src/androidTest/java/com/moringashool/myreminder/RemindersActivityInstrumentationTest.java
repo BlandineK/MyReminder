@@ -27,11 +27,11 @@ public class RemindersActivityInstrumentationTest {
     public ActivityTestRule<RemindersActivity> activityTestRule =
             new ActivityTestRule<>(RemindersActivity.class);
 
-//    @Test
-//    public void listItemClickDisplaysToastWithCorrectReminder() {
-//        View activityDecorView = activityTestRule.getActivity().getWindow().getDecorView();
-//        String reminderName = "Reminder1";
-//        onData(anything())
+    @Test
+    public void listItemClickDisplaysToastWithCorrectReminder() {
+        View activityDecorView = activityTestRule.getActivity().getWindow().getDecorView();
+        String reminderName = "Reminder1";
+        onData(anything())
                 .inAdapterView(withId(R.id.listView))
                 .atPosition(0)
                 .perform(click());
