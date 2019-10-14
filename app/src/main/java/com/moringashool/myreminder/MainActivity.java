@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
           mGetRemindersButton.setOnClickListener(new View.OnClickListener() {
               @Override
               public void onClick(View v) {
-//                  String location = mLocationEditText.getText().toString();
+                  String location = mLocationEditText.getText().toString();
                   Log.d(TAG, location);
                   Toast.makeText(MainActivity.this, location, Toast.LENGTH_LONG).show();
 
