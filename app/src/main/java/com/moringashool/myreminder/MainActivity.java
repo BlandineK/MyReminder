@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-          mGetRemindersButton.setOnClickListener(new View.OnClickListener() {
+//          mGetRemindersButton.setOnClickListener(new View.OnClickListener() {
               @Override
               public void onClick(View v) {
                   String location = mLocationEditText.getText().toString();
