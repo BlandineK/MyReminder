@@ -36,9 +36,9 @@ public class RemindersActivity extends AppCompatActivity {
         setContentView(R.layout.activity_reminders);
         ButterKnife.bind(this);
 
-//        mListView = (ListView) findViewById(R.id.listView);
-//
-//        mLocationTextView = (TextView) findViewById(R.id.locationTextView);
+        mListView = (ListView) findViewById(R.id.listView);
+
+        mLocationTextView = (TextView) findViewById(R.id.locationTextView);
 
 
 //
