@@ -10,6 +10,7 @@ import android.provider.CalendarContract;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -17,14 +18,18 @@ import android.widget.Toast;
 
 import com.moringashool.myreminder.MyRemindersArrayAdapter;
 import com.moringashool.myreminder.R;
+import com.moringashool.myreminder.models.Business;
+import com.moringashool.myreminder.models.Category;
 import com.moringashool.myreminder.models.YelpRemindersSearchResponse;
 import com.moringashool.myreminder.network.YelpApi;
+import com.moringashool.myreminder.network.YelpClient;
 
 import java.util.List;
 
 import adapters.ReminderListAdapter;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -83,18 +88,28 @@ private static final String TAG = RemindersActivity.class.getSimpleName();
 
         Log.d(TAG, "In the onCreate method!");
 
-        YelpApi user = YelpUser.getUser();
+        YelpApi client = YelpClient.getClient();
 
-        Call<YelpRemindersSearchResponse> call = user.getReminders(location, "reminders");
+        Call<YelpRemindersSearchResponse> call = client.getReminders(location, "reminders");
         call.enqueue(new Callback<YelpRemindersSearchResponse>() {
             @Override
             public void onResponse(Call<YelpRemindersSearchResponse> call, Response<YelpRemindersSearchResponse> response) {
                 if (response.isSuccessful()) {
-                    List<CalendarContract.Reminders> remindersList = response.body().getReminders();
+                    List<Business> remindersList = response.body().getBusinesses();
                     String[] reminders = new String[remindersList.size()];
-                    String[] remindersUse = new String[remindersList.size()];
+                    String[] categories = new String[remindersList.size()];
+                    for (int i = 0; i < reminders.length; i++){
+                        reminders[i] = remindersList.get(i).getName();
+                    }
 
-                    mAdapter = new ReminderListAdapter(RemindersActivity.this, reminders);
+                    for (int i = 0; i < categories.length; i++) {
+                        Category category = remindersList.get(i).getCategories().get(0);
+                        categories[i] = category.getTitle();
+                    }
+
+                    ArrayAdapter adapter = new MyRemindersArrayAdapter(RemindersActivity.this, android.R.layout.simple_list_item_1, reminders, categories);
+
+                    mListView.setAdapter(adapter);
                     mRecyclerView.setAdapter(mAdapter);
                     RecyclerView.LayoutManager layoutManager =
                             new LinearLayoutManager(RemindersActivity.this);
@@ -110,6 +125,7 @@ private static final String TAG = RemindersActivity.class.getSimpleName();
 
             @Override
             public void onFailure(Call<YelpRemindersSearchResponse> call, Throwable t) {
+                Log.e(TAG, "onFailure: ",t );
                 hideProgressBar();
                 showFailureMessage();
             }
@@ -138,12 +154,6 @@ private static final String TAG = RemindersActivity.class.getSimpleName();
     }
 
 
-    @Override
-
-    public void onFailure(Call<YelpRemindersSearchResponse> call, Throwable t) {
-
-
-
     }
-}
+
 

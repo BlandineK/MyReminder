@@ -46,6 +46,8 @@ android {
         implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
         implementation 'androidx.recyclerview:recyclerview:1.0.0'
         implementation 'com.squareup.picasso:picasso:2.71828'
+        implementation 'org.parceler:parceler-api:1.1.12'
+        annotationProcessor 'org.parceler:parceler:1.1.12'
         annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.0'
     }
 }

@@ -10,7 +10,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="com.moringaschool.myrestaurants.ui.RestaurantDetailFragment">
+        tools:context="com.moringaschool.myreminder.ui.ReminderDetailFragment">
 
         <LinearLayout
             android:orientation="vertical"
@@ -37,7 +37,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Restaurant Name"
+                    android:text="Reminder Name"
                     android:id="@+id/reminderNameTextView"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
@@ -48,7 +48,6 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="4.5/5"
                     android:id="@+id/ratingTextView"
                     android:layout_alignTop="@+id/reminderNameTextView"
                     android:layout_alignParentRight="true"
@@ -97,6 +96,28 @@
                         android:layout_marginBottom="10dp"
                         android:gravity="center" />
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="(503) 223-1282"
+                        android:id="@+id/phoneTextView"
+                        android:drawablePadding="4dp"
+                        android:textColor="@color/colorTextIcons"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="10dp"
+                        android:gravity="center"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="4dp"
+                        android:id="@+id/addressTextView"
+                        android:textColor="@color/colorTextIcons"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="10dp"
+                        android:gravity="center_vertical"/>
                 </LinearLayout>
 
                 <Button

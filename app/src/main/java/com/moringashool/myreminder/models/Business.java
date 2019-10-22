@@ -97,6 +97,8 @@ public class Business {
         this.location = location;
         this.distance = distance;
         this.transactions = transactions;
+
+
     }
 
     public Double getRating() {

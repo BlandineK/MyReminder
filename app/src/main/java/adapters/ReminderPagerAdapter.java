@@ -5,13 +5,14 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import com.moringashool.myreminder.models.Business;
+import com.moringashool.myreminder.ui.ReminderDetailFragment;
 import java.util.List;
 
 public class ReminderPagerAdapter extends FragmentPagerAdapter {
     private List<Business> mReminders;
 
-    public ReminderPagerAdapter(FragmentManager fm, int behavior, List<Business> reminders) {
-        super(fm, behavior);
+    public ReminderPagerAdapter(FragmentManager fm, List<Business> reminders) {
+        super(fm);
         mReminders = reminders;
     }
 

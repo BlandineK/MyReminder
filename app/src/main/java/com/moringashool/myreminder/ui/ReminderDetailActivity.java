@@ -12,6 +12,7 @@ import com.moringashool.myreminder.models.Business;
 
 
 import org.parceler.Parcels;
+
 import java.util.List;
 
 import butterknife.BindView;
@@ -33,7 +34,7 @@ public class ReminderDetailActivity extends AppCompatActivity {
         mReminders = Parcels.unwrap(getIntent().getParcelableExtra("reminders"));
         int startingPosition = getIntent().getIntExtra("position", 0);
 
-        adapterViewPager = new ReminderPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT, mReminders);
+        adapterViewPager = new ReminderPagerAdapter(getSupportFragmentManager(), mReminders);
         mViewPager.setAdapter(adapterViewPager);
         mViewPager.setCurrentItem(startingPosition);
     }
