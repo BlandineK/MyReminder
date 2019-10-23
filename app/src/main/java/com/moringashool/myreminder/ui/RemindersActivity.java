@@ -1,12 +1,7 @@
 package com.moringashool.myreminder.ui;
 
 import android.content.Intent;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.os.Bundle;
-import android.provider.CalendarContract;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -16,10 +11,13 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.moringashool.myreminder.MyRemindersArrayAdapter;
 import com.moringashool.myreminder.R;
 import com.moringashool.myreminder.models.Business;
-import com.moringashool.myreminder.models.Category;
 import com.moringashool.myreminder.models.YelpRemindersSearchResponse;
 import com.moringashool.myreminder.network.YelpApi;
 import com.moringashool.myreminder.network.YelpClient;
@@ -29,7 +27,6 @@ import java.util.List;
 import adapters.ReminderListAdapter;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -39,8 +36,7 @@ public class RemindersActivity extends AppCompatActivity {
     private ListView mListView;
 private static final String TAG = RemindersActivity.class.getSimpleName();
 
-    @BindView(R.id.recyclerView)
-    RecyclerView mRecyclerView;
+    @BindView(R.id.recyclerView) RecyclerView mRecyclerView;
     private ReminderListAdapter mAdapter;
 
     @BindView(R.id.errorTextView) TextView mErrorTextView;
@@ -48,16 +44,16 @@ private static final String TAG = RemindersActivity.class.getSimpleName();
     ProgressBar mProgressBar;
 //    private ReminderListAdapter mAdapter;
 
-    public List<CalendarContract.Reminders> reminder;
+//    public List<CalendarContract.Reminders> reminder;
+//
+//    private String[] reminders = new String[] {"Reminder1", "Reminder2",
+//            "Reminder3", "Reminder4", "Reminder5", "Reminder6",
+//            "Reminder7", "Reminder8", "Reminder9"};
+//
+//    private String[] remindersUse = new String[] {"Waking up", "Taking breakfast",
+//            "Time for lunch", "Doing a 30 min Prep", "Taking a short break", "Going to after class studies",
+//            "Going for a short jogging", "Taking bus to home", "Calling my Dad"};Dad
 
-    private String[] reminders = new String[] {"Reminder1", "Reminder2",
-            "Reminder3", "Reminder4", "Reminder5", "Reminder6",
-            "Reminder7", "Reminder8", "Reminder9"};
-
-    private String[] remindersUse = new String[] {"Waking up", "Taking breakfast",
-            "Time for lunch", "Doing a 30 min Prep", "Taking a short break", "Going to after class studies",
-            "Going for a short jogging", "Taking bus to home", "Calling my Dad"};
-//    public static final String TAG = RemindersActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,8 +67,8 @@ private static final String TAG = RemindersActivity.class.getSimpleName();
 
 
 //
-        MyRemindersArrayAdapter adapter = new MyRemindersArrayAdapter(this, android.R.layout.simple_list_item_1, reminders, remindersUse);
-        mListView.setAdapter(adapter);
+//        MyRemindersArrayAdapter adapter = new MyRemindersArrayAdapter(this, android.R.layout.simple_list_item_1, reminders, remindersUse);
+//        mListView.setAdapter(adapter);
 
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -80,7 +76,7 @@ private static final String TAG = RemindersActivity.class.getSimpleName();
                 String reminder = ((TextView) view).getText().toString();
 
                 Toast.makeText(RemindersActivity.this, reminder, Toast.LENGTH_LONG).show();
-//                Log.v(TAG, "In the onItemClickListener!");
+
             }
         });
         Intent intent = getIntent();
@@ -95,6 +91,7 @@ private static final String TAG = RemindersActivity.class.getSimpleName();
             @Override
             public void onResponse(Call<YelpRemindersSearchResponse> call, Response<YelpRemindersSearchResponse> response) {
                 if (response.isSuccessful()) {
+                    hideProgressBar();
                     List<Business> remindersList = response.body().getBusinesses();
                     String[] reminders = new String[remindersList.size()];
                     String[] categories = new String[remindersList.size()];
@@ -102,13 +99,14 @@ private static final String TAG = RemindersActivity.class.getSimpleName();
                         reminders[i] = remindersList.get(i).getName();
                     }
 
-                    for (int i = 0; i < categories.length; i++) {
-                        Category category = remindersList.get(i).getCategories().get(0);
-                        categories[i] = category.getTitle();
-                    }
+//                    for (int i = 0; i < categories.length; i++) {
+//                        Category category = remindersList.get(i).getCategories().get(0);
+//                        categories[i] = category.getTitle();
+//                    }
 
                     ArrayAdapter adapter = new MyRemindersArrayAdapter(RemindersActivity.this, android.R.layout.simple_list_item_1, reminders, categories);
 
+                    mAdapter = new ReminderListAdapter(RemindersActivity.this, reminders);
                     mListView.setAdapter(adapter);
                     mRecyclerView.setAdapter(mAdapter);
                     RecyclerView.LayoutManager layoutManager =
@@ -117,7 +115,9 @@ private static final String TAG = RemindersActivity.class.getSimpleName();
                     mRecyclerView.setHasFixedSize(true);
 
                     showReminders();
-                } else {
+                }
+
+                else {
                     showUnsuccessfulMessage();
                 }
             }
@@ -149,11 +149,8 @@ private static final String TAG = RemindersActivity.class.getSimpleName();
     }
 
     private void hideProgressBar() {
-
         mProgressBar.setVisibility(View.GONE);
     }
-
-
-    }
+}
 
 

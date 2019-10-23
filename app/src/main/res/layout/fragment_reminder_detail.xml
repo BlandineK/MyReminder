@@ -88,7 +88,7 @@
                         android:layout_height="wrap_content"
                         android:text="View on Yelp"
                         android:id="@+id/websiteTextView"
-                        android:drawableLeft="@drawable/ic_exit_to_app_white_24dp"
+                        android:drawableLeft="@drawable/ic_exit_to_app_black_24dp"
                         android:drawablePadding="4dp"
                         android:textColor="@color/colorTextIcons"
                         android:textSize="15sp"

@@ -18,8 +18,7 @@ public class MyRemindersArrayAdapter extends ArrayAdapter {
     @Override
     public Object getItem(int position) {
         String reminders = mreminders[position];
-        String remindersUse = mremindersUse[position];
-        return String.format("%s \nWhat to do: %s", reminders, remindersUse);
+        return String.format(reminders);
     }
     @Override
     public int getCount() {

@@ -27,7 +27,7 @@ public class ReminderListAdapter extends RecyclerView.Adapter<ReminderListAdapte
     private List<Business> mReminders;
     private Context mContext;
 
-    public ReminderListAdapter(Context context, List<Business> reminders) {
+    public ReminderListAdapter(Context context, String[] reminders) {
         mContext = context;
         mReminders = reminders;
     }
