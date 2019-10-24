@@ -6,7 +6,7 @@ This is an android Reminder App where you can set  a reminder.
    
    Blandine Uwase.
 
-##Installation
+## Installation
 
   . Install Android Studio.
   . Extract the downloaded file to a certain folder.
