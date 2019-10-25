@@ -29,7 +29,7 @@ public class ReminderListAdapter extends RecyclerView.Adapter<ReminderListAdapte
 
     public ReminderListAdapter(Context context, String[] reminders) {
         mContext = context;
-        mReminders = reminders;
+
     }
 
     @Override
