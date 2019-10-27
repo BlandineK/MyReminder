@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
                   Log.d(TAG, location);
                   Toast.makeText(MainActivity.this, location, Toast.LENGTH_LONG).show();
 
-                  Intent intent = new Intent(MainActivity.this, RemindersActivity.class);
+                  Intent intent = new Intent(MainActivity.this, ReminderActivity.class);
                   intent.putExtra("location", location);
                   startActivity(intent);
 

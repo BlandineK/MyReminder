@@ -20,10 +20,9 @@ import butterknife.ButterKnife;
 
 
 public class ReminderDetailActivity extends AppCompatActivity {
-    @BindView(R.id.viewPager)
-    ViewPager mViewPager;
+    @BindView(R.id.viewPager) ViewPager mViewPager;
     private ReminderPagerAdapter adapterViewPager;
-    List<Business> mReminders;
+    List<Business> mReminder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,12 +30,14 @@ public class ReminderDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_reminder_detail);
         ButterKnife.bind(this);
 
-        mReminders = Parcels.unwrap(getIntent().getParcelableExtra("reminders"));
+
+        mReminder = Parcels.unwrap(getIntent().getParcelableExtra("reminders"));
         int startingPosition = getIntent().getIntExtra("position", 0);
 
-        adapterViewPager = new ReminderPagerAdapter(getSupportFragmentManager(), mReminders);
+        adapterViewPager = new ReminderPagerAdapter(getSupportFragmentManager(),mReminder);
         mViewPager.setAdapter(adapterViewPager);
         mViewPager.setCurrentItem(startingPosition);
     }
+
 }
 

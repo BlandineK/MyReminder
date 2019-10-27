@@ -47,4 +47,3 @@ dependencies {
     annotationProcessor 'org.parceler:parceler:1.1.12'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.0'
 }
-
