@@ -1,19 +1,26 @@
 package com.moringashool.myreminder.ui;
+
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.fragment.app.Fragment;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.moringashool.myreminder.Constants;
 import com.moringashool.myreminder.R;
 import com.moringashool.myreminder.models.Business;
 import com.moringashool.myreminder.models.Category;
 import com.squareup.picasso.Picasso;
-
 
 import org.parceler.Parcels;
 
@@ -84,6 +91,9 @@ public class ReminderDetailFragment extends Fragment implements View.OnClickList
         mPhoneLabel.setOnClickListener(this);
         mAddressLabel.setOnClickListener(this);
 
+        mSaveReminderButton.setOnClickListener(this);
+
+
         return view;
     }
 
@@ -105,10 +115,28 @@ public class ReminderDetailFragment extends Fragment implements View.OnClickList
                             + "," + mReminder.getCoordinates().getLongitude()
                             + "?q=(" + mReminder.getName() + ")"));
             startActivity(mapIntent);
+
+            if (v == mSaveReminderButton) {
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                String uid = user.getUid();
+
+                DatabaseReference reminderRef = FirebaseDatabase
+                        .getInstance()
+                        .getReference(Constants.FIREBASE_CHILD_REMINDERS)
+                        .child(uid);
+
+                reminderRef.push().setValue(mReminder);
+
+                DatabaseReference pushRef = reminderRef.push();
+                String pushId = pushRef.getKey();
+                mReminder.setPushId(pushId);
+                pushRef.setValue(mReminder);
+
+                Toast.makeText(getContext(), "Saved", Toast.LENGTH_SHORT).show();
+            }
+
         }
 
     }
-
-
 }
 

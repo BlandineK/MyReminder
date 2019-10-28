@@ -1,5 +1,6 @@
 package com.moringashool.myreminder.ui;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -10,6 +11,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.moringashool.myreminder.Constants;
 import com.moringashool.myreminder.R;
+import com.moringashool.myreminder.models.Reminder;
+import com.moringashool.myreminder.service.YelpService;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -23,22 +26,31 @@ import okhttp3.Response;
 
 public class ReminderListActivity extends AppCompatActivity {
     public static final String TAG = ReminderListActivity.class.getSimpleName();
-    private ArrayList<Reminder> reminders = new ArrayList<>();
+
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
+
     private ReminderListAdapter mAdapter;
+    private ArrayList<Reminder> reminders = new ArrayList<>();
 
     private SharedPreferences mSharedPreferences;
     private String mRecentAddress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reminders);
         ButterKnife.bind(this);
 
+        Intent intent = getIntent();
+        String location = intent.getStringExtra("location");
+
+        getReminders(location);
+
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         mRecentAddress = mSharedPreferences.getString(Constants.PREFERENCES_LOCATION_KEY, null);
+
         if(mRecentAddress != null){
             getReminders(mRecentAddress);
         }
