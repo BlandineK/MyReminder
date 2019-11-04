@@ -31,7 +31,7 @@ import com.moringashool.myreminder.R;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private SharedPreferences mSharedPreferences;
     private SharedPreferences.Editor mEditor;
@@ -40,13 +40,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
 
-    @BindView(R.id.GetRemindersButton) Button mGetRemindersButton;
-    @BindView(R.id.locationEditText) EditText mLocationEditText;
-    @BindView(R.id.appNameTextView) TextView mAppNameTextView;
-
     public static final String TAG = MainActivity.class.getSimpleName();
 
     private ValueEventListener mSearchedLocationReferenceListener;
+
+    @BindView(R.id.GetRemindersButton) Button mGetRemindersButton;
+    @BindView(R.id.locationEditText) EditText mLocationEditText;
+    @BindView(R.id.appNameTextView) TextView mAppNameTextView;
+    @BindView(R.id.savedRemindersButton) Button mSavedRemindersButton;
+
 //    private Button mGetRemindersButton;
 //    private EditText mLocationEditText;
 //    private TextView mAppNameTextView;
@@ -65,7 +67,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .getInstance()
                 .getReference()
                 .child(Constants.FIREBASE_CHILD_SEARCHED_LOCATION);
-        mSearchedLocationReference.addValueEventListener(new ValueEventListener() { //attach listener
+        mSearchedLocationReferenceListener = mSearchedLocationReference.addValueEventListener(new ValueEventListener() {
+            mSavedRemindersButton.setOnClickListener(this);
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

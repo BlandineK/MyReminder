@@ -4,8 +4,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.widget.SearchView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.MenuItemCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -31,9 +36,10 @@ public class ReminderListActivity extends AppCompatActivity {
     RecyclerView mRecyclerView;
 
     private ReminderListAdapter mAdapter;
-    private ArrayList<Reminder> reminders = new ArrayList<>();
+    public ArrayList<Reminder> mReminders = new ArrayList<>();
 
     private SharedPreferences mSharedPreferences;
+    private SharedPreferences.Editor mEditor;
     private String mRecentAddress;
 
     @Override
@@ -51,27 +57,64 @@ public class ReminderListActivity extends AppCompatActivity {
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         mRecentAddress = mSharedPreferences.getString(Constants.PREFERENCES_LOCATION_KEY, null);
 
-        if(mRecentAddress != null){
+        if (mRecentAddress != null) {
             getReminders(mRecentAddress);
         }
     }
 
-    private void getReminders(String location){
-        final YelpService yelpService = new YelpService();
-        yelpService.findReminders(location, new Callback(){
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_search, menu);
+        ButterKnife.bind(this);
+
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        mEditor = mSharedPreferences.edit();
+
+        MenuItem menuItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(menuItem);
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
             @Override
-            public void onFailure(Call call, IOException e){
+            public boolean onQueryTextSubmit(String query) {
+                addToSharedPreferences(query);
+                getReminders(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void getReminders(String location) {
+        final YelpService yelpService = new YelpService();
+        yelpService.findReminders(location, new Callback() {
+
+            @Override
+            public void onFailure(Call call, IOException e) {
                 e.printStackTrace();
             }
 
             @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                reminders = yelpService.processResults(response);
+            public void onResponse(Call call, Response response) {
+                mReminders = yelpService.processResults(response);
+
                 ReminderListActivity.this.runOnUiThread(new Runnable() {
+
                     @Override
                     public void run() {
-                        mAdapter = new ReminderListAdapter(getApplicationContext(), reminders);
+                        mAdapter = new ReminderListAdapter(getApplicationContext(), mReminders);
                         mRecyclerView.setAdapter(mAdapter);
                         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(ReminderListActivity.this);
                         mRecyclerView.setLayoutManager(layoutManager);
@@ -81,6 +124,10 @@ public class ReminderListActivity extends AppCompatActivity {
             }
         });
     }
-
+    private void addToSharedPreferences(String location) {
+        mEditor.putString(Constants.PREFERENCES_LOCATION_KEY, location).apply();
+    }
 
 }
+
+

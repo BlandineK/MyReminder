@@ -1,16 +1,12 @@
 package com.moringashool.myreminder.ui;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -20,16 +16,17 @@ import com.moringashool.myreminder.Constants;
 import com.moringashool.myreminder.R;
 import com.moringashool.myreminder.models.Reminder;
 
-import adapters.FirebaseReminderViewHolder;
+import adapters.FirebaseReminderListAdapter;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import util.SimpleItemTouchHelperCallback;
 
-public class SavedReminderListActivity extends AppCompatActivity {
+public class SavedReminderListActivity extends AppCompatActivity implements OnStartDragListener {
     private DatabaseReference mReminderReference;
-    private FirebaseRecyclerAdapter<Reminder, FirebaseReminderViewHolder> mFirebaseAdapter;
+    private FirebaseReminderListAdapter mFirebaseAdapter;
+    private ItemTouchHelper mItemTouchHelper;
 
-    @BindView(R.id.recyclerView)
-    RecyclerView mRecyclerView;
+    @BindView(R.id.recyclerView) RecyclerView mRecyclerView;
 
 
     @Override
@@ -38,38 +35,27 @@ public class SavedReminderListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_reminders);
         ButterKnife.bind(this);
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        String uid = user.getUid();
 
-        mReminderReference = FirebaseDatabase
-                .getInstance()
-                .getReference(Constants.FIREBASE_CHILD_REMINDERS)
-                .child(uid);
         setUpFirebaseAdapter();
     }
 
     private void setUpFirebaseAdapter(){
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String uid = user.getUid();
+        mReminderReference = FirebaseDatabase.getInstance().getReference(Constants.FIREBASE_CHILD_REMINDERS).child(uid);
         FirebaseRecyclerOptions<Reminder> options =
                 new FirebaseRecyclerOptions.Builder<Reminder>()
                         .setQuery(mReminderReference, Reminder.class)
                         .build();
 
-        mFirebaseAdapter = new FirebaseRecyclerAdapter<Reminder, FirebaseReminderViewHolder>(options) {
-            @Override
-            protected void onBindViewHolder(@NonNull FirebaseReminderViewHolder firebaseReminderViewHolder, int position, @NonNull Reminder reminder) {
-                firebaseReminderViewHolder.bindReminder(reminder);
-            }
-
-            @NonNull
-            @Override
-            public FirebaseReminderViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.reminder_list_item, parent, false);
-                return new FirebaseReminderViewHolder(view);
-            }
-        };
+        mFirebaseAdapter = new FirebaseReminderListAdapter(options, mReminderReference, this, this);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mFirebaseAdapter);
+        mRecyclerView.setHasFixedSize(true);
+        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(mFirebaseAdapter);
+        mItemTouchHelper = new ItemTouchHelper(callback);
+        mItemTouchHelper.attachToRecyclerView(mRecyclerView);
     }
 
     @Override
@@ -84,5 +70,8 @@ public class SavedReminderListActivity extends AppCompatActivity {
         if(mFirebaseAdapter!= null) {
             mFirebaseAdapter.stopListening();
         }
+    }
+    public void onStartDrag(RecyclerView.ViewHolder viewHolder){
+        mItemTouchHelper.startDrag(viewHolder);
     }
 }

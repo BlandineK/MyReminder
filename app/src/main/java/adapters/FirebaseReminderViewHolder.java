@@ -28,6 +28,8 @@ public class FirebaseReminderViewHolder extends RecyclerView.ViewHolder implemen
     View mView;
     Context mContext;
 
+    public ImageView mReminderImageView;
+
     public FirebaseReminderViewHolder(View itemView) {
         super(itemView);
         mView = itemView;
@@ -35,13 +37,15 @@ public class FirebaseReminderViewHolder extends RecyclerView.ViewHolder implemen
         itemView.setOnClickListener(this);
     }
 
-    public void bindReminder(Reminder reminders) {
+    public void bindReminder(Reminder reminder) {
+        mReminderImageView = (ImageView) mView.findViewById(R.id.reminderImageView);
         ImageView reminderImageView = (ImageView) mView.findViewById(R.id.reminderImageView);
         TextView nameTextView = (TextView) mView.findViewById(R.id.reminderNameTextView);
         TextView categoryTextView = (TextView) mView.findViewById(R.id.categoryTextView);
         TextView ratingTextView = (TextView) mView.findViewById(R.id.ratingTextView);
 
         Picasso.get().load(reminder.getImageUrl()).into(reminderImageView);
+        Picasso.get().load(reminder.getImageUrl()).into(mReminderImageView);
 
         nameTextView.setText(reminder.getName());
         categoryTextView.setText(reminder.getCategories().get(0));
