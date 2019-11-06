@@ -12,6 +12,7 @@ public class Reminder {
     String website;
     double rating;
     String imageUrl;
+    String index;
     List<String> address = new ArrayList<>();
     double latitude;
     double longitude;
@@ -30,6 +31,8 @@ public class Reminder {
         this.latitude = latitude;
         this.longitude = longitude;
         this.categories = categories;
+        this.index = "not_specified";
+
     }
 
     public String getName() {
@@ -66,6 +69,14 @@ public class Reminder {
 
     public List<String> getCategories() {
         return categories;
+    }
+
+    public String getIndex() {
+        return index;
+    }
+
+    public void setIndex(String index) {
+        this.index = index;
     }
 
     public String getPushId() {

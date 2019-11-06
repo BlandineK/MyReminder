@@ -12,6 +12,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.moringashool.myreminder.Constants;
 import com.moringashool.myreminder.R;
 import com.moringashool.myreminder.models.Reminder;
@@ -19,6 +20,7 @@ import com.moringashool.myreminder.models.Reminder;
 import adapters.FirebaseReminderListAdapter;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import util.OnStartDragListener;
 import util.SimpleItemTouchHelperCallback;
 
 public class SavedReminderListActivity extends AppCompatActivity implements OnStartDragListener {
@@ -42,6 +44,12 @@ public class SavedReminderListActivity extends AppCompatActivity implements OnSt
     private void setUpFirebaseAdapter(){
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String uid = user.getUid();
+
+        Query query = FirebaseDatabase.getInstance()
+                .getReference(Constants.FIREBASE_CHILD_REMINDERS)
+                .child(uid)
+                .orderByChild(Constants.FIREBASE_QUERY_INDEX);
+
         mReminderReference = FirebaseDatabase.getInstance().getReference(Constants.FIREBASE_CHILD_REMINDERS).child(uid);
         FirebaseRecyclerOptions<Reminder> options =
                 new FirebaseRecyclerOptions.Builder<Reminder>()
@@ -63,10 +71,16 @@ public class SavedReminderListActivity extends AppCompatActivity implements OnSt
         super.onStart();
         mFirebaseAdapter.startListening();
     }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mFirebaseAdapter.stopListening();
+    }
 
     @Override
     protected void onStop() {
         super.onStop();
+
         if(mFirebaseAdapter!= null) {
             mFirebaseAdapter.stopListening();
         }

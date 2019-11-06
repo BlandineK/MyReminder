@@ -1,7 +1,10 @@
 package adapters;
 
+import android.animation.AnimatorInflater;
+import android.animation.AnimatorSet;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -23,7 +26,14 @@ import org.parceler.Parcels;
 
 import java.util.ArrayList;
 
-public class FirebaseReminderViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+import util.ItemTouchHelperViewHolder;
+
+public class FirebaseReminderViewHolder extends RecyclerView.ViewHolder implements ItemTouchHelperViewHolder {
+
+
+    private static final int MAX_WIDTH = 200;
+    private static final int MAX_HEIGHT = 200;
+
 
     View mView;
     Context mContext;
@@ -44,7 +54,6 @@ public class FirebaseReminderViewHolder extends RecyclerView.ViewHolder implemen
         TextView categoryTextView = (TextView) mView.findViewById(R.id.categoryTextView);
         TextView ratingTextView = (TextView) mView.findViewById(R.id.ratingTextView);
 
-        Picasso.get().load(reminder.getImageUrl()).into(reminderImageView);
         Picasso.get().load(reminder.getImageUrl()).into(mReminderImageView);
 
         nameTextView.setText(reminder.getName());
@@ -76,6 +85,41 @@ public class FirebaseReminderViewHolder extends RecyclerView.ViewHolder implemen
             @Override
             public void onCancelled(DatabaseError databaseError) {
             }
+
         });
     }
+    @Override
+    public void onItemSelected() {
+        Log.d("Animation", "onItemSelected");
+        AnimatorSet set = (AnimatorSet) AnimatorInflater.loadAnimator(mContext,
+                R.animator.drag_scale_on);
+        set.setTarget(itemView);
+        set.start();
+    }
+
+    @Override
+    public void onItemClear() {
+        Log.d("Animation", "onItemClear");
+        AnimatorSet set = (AnimatorSet) AnimatorInflater.loadAnimator(mContext,
+                R.animator.drag_scale_off);
+        set.setTarget(itemView);
+        set.start();
+    }
+    @Override
+    public void onItemSelected() {
+        itemView.animate()
+                .alpha(0.7f)
+                .scaleX(0.9f)
+                .scaleY(0.9f)
+                .setDuration(500);
+    }
+
+    @Override
+    public void onItemClear() {
+        itemView.animate()
+                .alpha(1f)
+                .scaleX(1f)
+                .scaleY(1f);
+    }
+
 }
